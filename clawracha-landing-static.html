@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clawracha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:72px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#050505;color:#E0E0E0;font-family:'Outfit',system-ui,-apple-system,'Segoe UI',sans-serif;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono','Courier New',Consolas,monospace;font-variant-ligatures:none}
+.bold{font-family:'Syne','Arial Black','Helvetica Neue',Impact,sans-serif}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(#FF6B0006 1px,transparent 1px),linear-gradient(90deg,#FF6B0006 1px,transparent 1px);background-size:80px 80px}
+.bg-orb1{position:fixed;top:-300px;right:-200px;width:800px;height:800px;background:radial-gradient(circle,#FF6B0010 0%,transparent 55%);border-radius:50%;z-index:0;filter:blur(100px)}
+.bg-orb2{position:fixed;bottom:-400px;left:-200px;width:700px;height:700px;background:radial-gradient(circle,#FF6B0008 0%,transparent 55%);border-radius:50%;z-index:0;filter:blur(120px)}
+.wrap{position:relative;z-index:2;max-width:1060px;margin:0 auto;padding:0 40px}
+nav{position:sticky;top:0;z-index:10;border-bottom:1px solid #101010;background:rgba(5,5,5,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.nav-inner{max-width:1060px;margin:0 auto;padding:12px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-link{font-size:13px;color:#444;text-decoration:none;cursor:pointer;transition:color .2s}
+.nav-link:hover{color:#FF6B00}
+.pill{display:inline-flex;align-items:center;gap:8px;background:#FF6B000E;border:1px solid #FF6B001A;border-radius:100px;padding:5px 14px;margin-bottom:24px}
+.pill-dot{width:7px;height:7px;border-radius:50%;background:#FF6B00;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+.btn{display:inline-block;cursor:pointer;transition:transform .15s,box-shadow .15s;text-decoration:none}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 20px #FF6B0030}
+.card{background:#090909;border:1px solid #101010;border-radius:12px;padding:20px 22px 22px 18px;transition:transform .2s,border-color .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);border-color:#FF6B00;box-shadow:0 8px 32px #FF6B0015}
+.tag{font-size:9px;color:#FF6B00;letter-spacing:1.5px;background:#FF6B000C;padding:3px 7px;border-radius:4px;border:1px solid #FF6B0018}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 13px;text-align:left;color:#303030;font-size:9px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase}
+td{padding:12px 13px;font-size:12px}
+thead tr{border-bottom:1px solid #131313}
+tbody tr{border-bottom:1px solid #0B0B0B}
+.diagram{padding:36px 0;position:relative}
+.d-box{width:56px;height:56px;background:#0D0D0D;border:1px solid #181818;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.e-box{background:#FF6B000A;border:1px solid #FF6B0025;border-radius:10px;padding:14px 36px;display:inline-flex;flex-direction:column;align-items:center;gap:6px}
+.s-box{background:#0D0D0D;border:1px solid #181818;border-radius:10px;padding:12px 32px;display:inline-flex;flex-direction:column;align-items:center;gap:6px}
+.p-box{background:#0D0D0D;border:1px dashed #1A1A1A;border-radius:10px;padding:10px 24px;display:inline-block}
+.step{background:#090909;border:1px solid #101010;border-radius:10px;padding:16px 20px 16px 14px;display:flex;align-items:center;gap:14px;margin-bottom:10px;cursor:pointer;transition:background .2s}
+.step:hover{background:#0F0F0F}
+.copy-block{cursor:pointer;transition:background .2s}
+.copy-block:hover{background:#0D0D0D}
+.footer-link{font-size:12px;color:#222;text-decoration:none;cursor:pointer;transition:color .2s}
+.footer-link:hover{color:#FF6B00}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.hero-anim{animation:fadeUp .7s ease-out both}
+
+/* ===== TABLET ===== */
+@media(max-width:768px){
+  .wrap{padding:0 24px !important}
+  .wrap>section{padding-bottom:56px !important}
+  .wrap h2{font-size:32px !important;letter-spacing:-1.5px !important}
+
+  /* Nav */
+  .nav-inner{padding:12px 20px !important}
+  .nav-inner>div:first-child>span:nth-child(3){display:none !important}
+  .nav-inner>div:last-child{gap:14px !important}
+
+  /* Hero */
+  .hero-anim{padding:64px 0 56px !important}
+  .hero-anim h1{font-size:48px !important;letter-spacing:-2px !important}
+  .hero-anim>p{font-size:16px !important;max-width:100% !important}
+  .copy-block{max-width:100% !important}
+
+  /* Grids */
+  .grid-2{grid-template-columns:1fr !important}
+  .grid-3{grid-template-columns:repeat(2,1fr) !important}
+
+  /* Diagram */
+  .diagram-boxes{gap:16px !important;flex-wrap:wrap !important}
+  .diagram-note{position:static !important;text-align:center !important;margin-top:16px !important}
+
+  /* Table */
+  .table-wrap{overflow-x:auto !important;overflow-y:hidden !important}
+  .table-wrap table{min-width:600px}
+  #compare th,#compare td{padding:10px 8px !important}
+
+  /* CTA */
+  .cta-section{padding:48px 0 72px !important}
+  .cta-section h2{font-size:36px !important}
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:480px){
+  .wrap{padding:0 16px !important}
+  .wrap>section{padding-bottom:40px !important}
+  .wrap h2{font-size:28px !important;letter-spacing:-1px !important}
+
+  /* Nav */
+  .nav-inner{padding:10px 16px !important}
+  .nav-inner>div:last-child .nav-link{display:none !important}
+  .nav-inner .btn{padding:12px 16px !important}
+
+  /* Hero */
+  .hero-anim{padding:48px 0 40px !important}
+  .hero-anim h1{font-size:36px !important;letter-spacing:-1.5px !important}
+  .hero-anim>p{font-size:15px !important}
+  .hero-buttons{flex-direction:column !important}
+  .hero-buttons .btn{width:100% !important;text-align:center !important}
+  .copy-block{padding:12px 14px !important}
+  .copy-block .mono{font-size:11px !important}
+
+  /* Grids */
+  .grid-3{grid-template-columns:1fr !important}
+
+  /* Diagram */
+  .diagram-boxes{display:grid !important;grid-template-columns:repeat(2,1fr) !important;justify-items:center !important}
+  .diagram-arrows{font-size:0 !important;padding:4px 0 !important}
+  .diagram-arrows::after{content:"▼";font-size:18px;color:#333}
+  .diagram .e-box,.diagram .s-box{padding:14px 20px !important;width:100% !important}
+  .diagram .p-box{padding:10px 16px !important}
+  .diagram .e-box .mono{flex-wrap:wrap !important;gap:8px !important}
+
+  /* Table: swap to transposed */
+  .table-desktop{display:none !important}
+  .table-mobile{display:block !important}
+  .table-mobile th,.table-mobile td{padding:11px 8px !important;font-size:11px !important}
+  .table-mobile th{text-transform:none !important}
+
+  /* Steps */
+  .step>span:first-child{font-size:20px !important;min-width:32px !important}
+  .step>div:nth-child(2){overflow-x:auto;min-width:0}
+  .step .mono{font-size:11px !important}
+
+  /* CTA */
+  .cta-section{padding:40px 0 56px !important}
+  .cta-section h2{font-size:30px !important}
+  .cta-section>div:last-child{flex-direction:column !important;align-items:center !important}
+  .cta-section>div:last-child .btn{width:100% !important;max-width:300px !important;text-align:center !important}
+
+  /* Footer */
+  footer{flex-direction:column !important;gap:16px !important;align-items:center !important;text-align:center !important;padding-bottom:40px !important}
+  footer>div:last-child{flex-wrap:wrap !important;justify-content:center !important}
+  .footer-link{padding:12px 8px !important}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-orb1"></div>
+<div class="bg-orb2"></div>
+
+<nav>
+<div class="nav-inner">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="mono" style="width:28px;height:28px;background:linear-gradient(135deg,#FF6B00,#FF9248);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#000">C</div>
+    <span class="bold" style="font-size:16px;background:linear-gradient(135deg,#FF6B00,#FFAA66);-webkit-background-clip:text;-webkit-text-fill-color:transparent">clawracha</span>
+    <span class="mono" style="font-size:9px;color:#383838;background:#0C0C0C;padding:2px 7px;border-radius:3px;letter-spacing:1.5px;border:1px solid #161616">by Storacha</span>
+  </div>
+  <div style="display:flex;gap:20px;align-items:center">
+    <a href="#scenarios" class="nav-link">Scenarios</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#compare" class="nav-link">Compare</a>
+    <a href="https://github.com/storacha/clawracha" target="_blank" class="nav-link">GitHub</a>
+    <a href="#install" class="btn" style="background:#FF6B00;color:#000;font-weight:700;font-size:12px;padding:7px 16px;border-radius:6px">Get Started</a>
+  </div>
+</div>
+</nav>
+
+<div class="wrap">
+
+<!-- HERO -->
+<section style="padding:96px 0 72px" class="hero-anim">
+  <div class="pill">
+    <div class="pill-dot"></div>
+    <span class="mono" style="font-size:11px;color:#FF6B00;letter-spacing:1px;font-weight:500">COLLABORATIVE AI MEMORY</span>
+  </div>
+  <h1 class="bold" style="font-size:64px;line-height:1.05;letter-spacing:-2.5px;margin-bottom:24px;max-width:820px">
+    <span style="color:#E8E8E8">Your memory.</span><br>
+    <span style="color:#E8E8E8">Your agents.</span><br>
+    <span style="background:linear-gradient(135deg,#FF6B00,#FF9248,#FFCC80);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Everywhere.</span>
+  </h1>
+  <p style="font-size:18px;color:#555;max-width:600px;line-height:1.7;margin-bottom:40px">
+    Run your agent on a VPS, a Mac Mini, your phone, or the cloud — same memory, always.
+    Share memory across your agents without mixing context.
+  </p>
+  <div class="hero-buttons" style="display:flex;gap:14px;margin-bottom:40px">
+    <a href="#install" class="btn" style="background:#FF6B00;color:#000;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px">Install Plugin →</a>
+    <a href="https://github.com/storacha/clawracha" target="_blank" class="btn" style="color:#666;font-weight:600;font-size:15px;padding:14px 28px;border-radius:8px;border:1px solid #1A1A1A">View Source</a>
+  </div>
+  <div class="copy-block" data-copy="openclaw plugins install @storacha/clawracha" onclick="copy(this)" style="background:#090909;border:1px solid #141414;border-radius:10px;padding:14px 20px;max-width:490px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 0 35px #FF6B0018">
+    <div>
+      <span class="mono" style="color:#2A2A2A;font-size:13px">$ </span>
+      <span class="mono" style="color:#FF6B00;font-size:13px;font-weight:600">openclaw plugins install</span>
+      <span class="mono" style="color:#AAA;font-size:13px"> @storacha/clawracha</span>
+    </div>
+    <span class="mono copy-label" style="font-size:11px;color:#2A2A2A">copy</span>
+  </div>
+</section>
+
+<!-- PROBLEM/SOLUTION — no card boxes, bright text flush with page left edge -->
+<section style="padding:0 0 72px">
+  <div class="grid-2" style="gap:40px">
+    <div>
+      <div class="mono" style="font-size:10px;color:#FF3B3B;letter-spacing:2px;margin-bottom:18px">SOUND FAMILIAR?</div>
+      <div style="font-size:14px;color:#505050;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF3B3B;flex-shrink:0">✗</span><span>Your agent forgets everything when you restart a session</span></div>
+      <div style="font-size:14px;color:#505050;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF3B3B;flex-shrink:0">✗</span><span>Switch from laptop to phone — your agent doesn't know you</span></div>
+      <div style="font-size:14px;color:#505050;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF3B3B;flex-shrink:0">✗</span><span>Your family shares an agent but memories bleed together</span></div>
+      <div style="font-size:14px;color:#505050;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF3B3B;flex-shrink:0">✗</span><span>Deploy to a VPS and your local memory stays behind</span></div>
+      <div style="font-size:14px;color:#505050;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF3B3B;flex-shrink:0">✗</span><span>Two agents working together? They can't share what they learned</span></div>
+      <div style="font-size:14px;color:#505050;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF3B3B;flex-shrink:0">✗</span><span>Memory plugins store your thoughts on someone else's server</span></div>
+    </div>
+    <div>
+      <div class="mono" style="font-size:10px;color:#FF6B00;letter-spacing:2px;margin-bottom:18px">WITH CLAWRACHA</div>
+      <div style="font-size:14px;color:#888;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF6B00;flex-shrink:0">✓</span><span>Memories persist automatically — restarts, compaction, nothing lost</span></div>
+      <div style="font-size:14px;color:#888;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF6B00;flex-shrink:0">✓</span><span>Same agent brain on every device, instantly</span></div>
+      <div style="font-size:14px;color:#888;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF6B00;flex-shrink:0">✓</span><span>Each person and each agent gets isolated memory — shared only when you choose</span></div>
+      <div style="font-size:14px;color:#888;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF6B00;flex-shrink:0">✓</span><span>Deploy anywhere — local, VPS, cloud — memory is always there</span></div>
+      <div style="font-size:14px;color:#888;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF6B00;flex-shrink:0">✓</span><span>Agents collaborate on shared memory, edits merge without conflicts</span></div>
+      <div style="font-size:14px;color:#888;line-height:1.6;padding:8px 0;display:flex;gap:10px"><span style="color:#FF6B00;flex-shrink:0">✓</span><span>Your memory lives in your storage, encrypted, under your control</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section id="scenarios" style="padding:0 0 80px">
+  <div class="mono" style="font-size:10px;color:#FF6B00;letter-spacing:2px;margin-bottom:10px">// REAL SETUPS</div>
+  <h2 class="bold" style="font-size:40px;letter-spacing:-1.5px;margin-bottom:40px;line-height:1.15">How people use it.</h2>
+  <div class="grid-2">
+    <div style="border-left:2px solid #181818;padding:4px 0 4px 20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:20px">🧑‍💻</span><span class="bold" style="font-size:15px;color:#DDD">Solo Power User</span></div>
+      <p style="font-size:13px;color:#FF6B00;line-height:1.55;font-style:italic;opacity:.85;margin-bottom:10px">"I run OpenClaw on my Mac Mini and my laptop. Before Clawracha, switching devices meant losing context. Now it's the same brain everywhere."</p>
+      <p style="font-size:12.5px;color:#444;line-height:1.6">One agent, multiple devices. Memory follows you across laptop → phone → VPS → cloud. Private encrypted space for personal memories.</p>
+    </div>
+    <div style="border-left:2px solid #181818;padding:4px 0 4px 20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:20px">👨‍👩‍👧</span><span class="bold" style="font-size:15px;color:#DDD">Family Setup</span></div>
+      <p style="font-size:13px;color:#FF6B00;line-height:1.55;font-style:italic;opacity:.85;margin-bottom:10px">"My family interacts with the agent too, but they need their own memory. We share calendar context but my personal notes stay mine."</p>
+      <p style="font-size:12.5px;color:#444;line-height:1.6">Family gateway with multiple agents. Shared scheduling memory, isolated personal spaces. Kids' agent has restricted tools, full memory isolation.</p>
+    </div>
+    <div style="border-left:2px solid #181818;padding:4px 0 4px 20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:20px">👥</span><span class="bold" style="font-size:15px;color:#DDD">Dev Team</span></div>
+      <p style="font-size:13px;color:#FF6B00;line-height:1.55;font-style:italic;opacity:.85;margin-bottom:10px">"Our team's agents build on each other's work. Everyone's coding context compounds, but my agent still knows my preferences."</p>
+      <p style="font-size:12.5px;color:#444;line-height:1.6">Team workspace with role-based access. Shared project memory, individual style preferences. Full audit trail of who remembered what and when.</p>
+    </div>
+    <div style="border-left:2px solid #181818;padding:4px 0 4px 20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:20px">🤖</span><span class="bold" style="font-size:15px;color:#DDD">Agent Swarm</span></div>
+      <p style="font-size:13px;color:#FF6B00;line-height:1.55;font-style:italic;opacity:.85;margin-bottom:10px">"I have a research agent, a coding agent, and a writing agent. They collaborate through shared memory without me manually copying context."</p>
+      <p style="font-size:12.5px;color:#444;line-height:1.6">Multiple specialized agents share a knowledge workspace. Conflict-free writes from any agent. Each agent can also maintain private working memory.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" style="padding:0 0 80px">
+  <div class="mono" style="font-size:10px;color:#FF6B00;letter-spacing:2px;margin-bottom:10px">// WHAT IT DOES</div>
+  <h2 class="bold" style="font-size:40px;letter-spacing:-1.5px;margin-bottom:40px;line-height:1.15">Memory that works<br>the way you do.</h2>
+  <div class="grid-3">
+    <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-size:24px">🌍</span><span class="tag mono">PORTABLE</span></div><h3 class="bold" style="font-size:15px;color:#DDD;margin-bottom:8px">Deploy Anywhere, Remember Everything</h3><p style="font-size:12.5px;color:#484848;line-height:1.6">Mac Mini at home, $5 VPS, DigitalOcean, your laptop — your agent's memory follows. No manual backups, no copying files.</p></div>
+    <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-size:24px">🧠</span><span class="tag mono">ISOLATED</span></div><h3 class="bold" style="font-size:15px;color:#DDD;margin-bottom:8px">Agent-Isolated Memory</h3><p style="font-size:12.5px;color:#484848;line-height:1.6">Your personal agent and your work agent don't cross-contaminate. Each agent gets its own memory space with clean boundaries.</p></div>
+    <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-size:24px">👨‍👩‍👧‍👦</span><span class="tag mono">SHARED</span></div><h3 class="bold" style="font-size:15px;color:#DDD;margin-bottom:8px">Shared Family & Team Memory</h3><p style="font-size:12.5px;color:#484848;line-height:1.6">Your family's agents share scheduling context but keep personal memories private. Team knowledge compounds while individual preferences stay separate.</p></div>
+    <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-size:24px">🤝</span><span class="tag mono">COLLABORATIVE</span></div><h3 class="bold" style="font-size:15px;color:#DDD;margin-bottom:8px">Multi-Agent Collaboration</h3><p style="font-size:12.5px;color:#484848;line-height:1.6">Multiple agents read and write to shared memory — concurrent edits merge automatically, no conflicts ever.</p></div>
+    <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-size:24px">🔐</span><span class="tag mono">ENCRYPTED</span></div><h3 class="bold" style="font-size:15px;color:#DDD;margin-bottom:8px">Private When You Need It</h3><p style="font-size:12.5px;color:#484848;line-height:1.6">Encrypt any memory space. Private thoughts, health data, financial notes — encrypted before they leave your machine.</p></div>
+    <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-size:24px">✅</span><span class="tag mono">YOURS</span></div><h3 class="bold" style="font-size:15px;color:#DDD;margin-bottom:8px">Verifiable & User-Owned</h3><p style="font-size:12.5px;color:#484848;line-height:1.6">Every memory change is tracked and tamper-proof. You can prove what your agent knew and when. You control access.</p></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section style="padding:0 0 80px">
+  <div class="mono" style="font-size:10px;color:#FF6B00;letter-spacing:2px;margin-bottom:10px">// HOW IT WORKS</div>
+  <h2 class="bold" style="font-size:40px;letter-spacing:-1.5px;margin-bottom:16px;line-height:1.15">One engine. Many agents.</h2>
+  <p style="font-size:14px;color:#666;max-width:580px;line-height:1.65;margin-bottom:36px">A background engine watches your agent's memory files. Changes are automatically persisted, encrypted if private, and merged conflict-free.</p>
+  <div class="diagram">
+    <div class="diagram-boxes" style="display:flex;justify-content:center;gap:24px;margin-bottom:8px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="d-box">💻</div><span class="mono" style="font-size:10px;color:#555">Your laptop</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="d-box">☁️</div><span class="mono" style="font-size:10px;color:#555">VPS / Cloud</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="d-box">👨‍👩‍👧</div><span class="mono" style="font-size:10px;color:#555">Family agent</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="d-box">💼</div><span class="mono" style="font-size:10px;color:#555">Work agent</span></div>
+    </div>
+    <div class="diagram-arrows" style="text-align:center;color:#333;font-size:18px;padding:8px 0">▼ &nbsp;&nbsp; ▼ &nbsp;&nbsp; ▼ &nbsp;&nbsp; ▼</div>
+    <div style="text-align:center;margin-bottom:8px">
+      <div class="e-box">
+        <span class="bold" style="font-size:13px;color:#FF6B00">Clawracha Engine</span>
+        <div class="mono" style="display:flex;justify-content:center;gap:14px;font-size:10px;color:#555"><span>watch</span><span style="color:#444">→</span><span>merge</span><span style="color:#444">→</span><span>encrypt</span><span style="color:#444">→</span><span>persist</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;color:#333;font-size:18px;padding:8px 0">▼</div>
+    <div style="text-align:center;margin-bottom:8px">
+      <div class="s-box"><span class="bold" style="font-size:14px;color:#FF9248">Storacha</span><span class="mono" style="font-size:10px;color:#555">verifiable · tamper-proof · your storage</span></div>
+    </div>
+    <div style="text-align:center;color:#333;font-size:18px;padding:8px 0">▼</div>
+    <div style="text-align:center"><div class="p-box"><span class="mono" style="font-size:11px;color:#666">All authorized devices & agents pull changes automatically</span></div></div>
+    <div class="diagram-note" style="position:absolute;right:20px;top:20px;text-align:right"><div class="mono" style="font-size:9px;color:#444">grant access: one command</div><div class="mono" style="font-size:9px;color:#444;margin-top:4px">revoke access: one command</div></div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="compare" style="padding:0 0 80px">
+  <div class="mono" style="font-size:10px;color:#FF6B00;letter-spacing:2px;margin-bottom:10px">// VS THE REST</div>
+  <h2 class="bold" style="font-size:40px;letter-spacing:-1.5px;margin-bottom:14px;line-height:1.15">Who actually solves<br>multi-agent memory?</h2>
+  <p style="font-size:14px;color:#666;max-width:520px;line-height:1.65;margin-bottom:32px">Every other plugin either sends your memories to their cloud, or traps them on one machine with no isolation between agents.</p>
+  <!-- Desktop/tablet table -->
+  <div class="table-wrap table-desktop" style="background:#090909;border:1px solid #101010;border-radius:12px;overflow:hidden">
+    <table class="mono">
+      <thead><tr><th>Plugin</th><th>Memory lives…</th><th>Agent isolation</th><th>Multi-device</th><th>Agent collab</th><th>E2E Encrypted</th><th>You own it</th></tr></thead>
+      <tbody>
+        <tr style="background:#FF6B0008"><td style="color:#FF6B00;font-weight:700">Clawracha</td><td style="color:#888">Your storage</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td></tr>
+        <tr><td style="color:#555">Supermemory</td><td style="color:#3A3A3A">Their servers</td><td style="text-align:center">❌</td><td style="text-align:center">✅</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td><td style="text-align:center;color:#484848">Partial</td></tr>
+        <tr><td style="color:#555">Mem0</td><td style="color:#3A3A3A">Their servers</td><td style="text-align:center">❌</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td></tr>
+        <tr><td style="color:#555">Built-in QMD</td><td style="color:#3A3A3A">One machine</td><td style="text-align:center">✅</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td><td style="text-align:center;color:#484848">Partial</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Mobile transposed table -->
+  <div class="table-mobile" style="display:none;background:#090909;border:1px solid #101010;border-radius:12px;overflow:hidden">
+    <table class="mono" style="width:100%">
+      <thead><tr><th></th><th style="text-align:center;color:#FF6B00;font-weight:700;background:#FF6B0008">Racha</th><th style="text-align:center">Super</th><th style="text-align:center">Mem0</th><th style="text-align:center">QMD</th></tr></thead>
+      <tbody>
+        <tr style="background:#0B0B0B"><td style="color:#555">Storage</td><td style="text-align:center;color:#FF6B00;font-size:10px;background:#FF6B0008">Yours</td><td style="text-align:center;color:#3A3A3A;font-size:10px">Theirs</td><td style="text-align:center;color:#3A3A3A;font-size:10px">Theirs</td><td style="text-align:center;color:#3A3A3A;font-size:10px">Local</td></tr>
+        <tr><td style="color:#555">Agent isolation</td><td style="text-align:center;background:#FF6B0008">✅</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td><td style="text-align:center">✅</td></tr>
+        <tr style="background:#0B0B0B"><td style="color:#555">Multi-device</td><td style="text-align:center;background:#FF6B0008">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">❌</td></tr>
+        <tr><td style="color:#555">Agent collab</td><td style="text-align:center;background:#FF6B0008">✅</td><td style="text-align:center">❌</td><td style="text-align:center">✅</td><td style="text-align:center">❌</td></tr>
+        <tr style="background:#0B0B0B"><td style="color:#555">E2E Encrypted</td><td style="text-align:center;background:#FF6B0008">✅</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td></tr>
+        <tr><td style="color:#555">You own it</td><td style="text-align:center;background:#FF6B0008">✅</td><td style="text-align:center;color:#484848;font-size:10px">Partial</td><td style="text-align:center">❌</td><td style="text-align:center;color:#484848;font-size:10px">Partial</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install" style="padding:0 0 80px">
+  <div class="mono" style="font-size:10px;color:#FF6B00;letter-spacing:2px;margin-bottom:10px">// GET STARTED</div>
+  <h2 class="bold" style="font-size:40px;letter-spacing:-1.5px;margin-bottom:12px;line-height:1.15">Three commands.</h2>
+  <p style="font-size:14px;color:#666;max-width:520px;line-height:1.65;margin-bottom:36px">Install the plugin, create a memory space for your agent, and share it with your other devices or teammates. That's it.</p>
+  <div class="step" data-copy="openclaw plugins install @storacha/clawracha" onclick="copy(this)"><span class="bold" style="font-size:26px;color:#252525;min-width:40px">01</span><div style="flex:1"><div class="mono" style="font-size:13px"><span style="color:#444">$ </span><span style="color:#FF6B00">openclaw plugins install @storacha/clawracha</span></div><div style="font-size:12px;color:#555;margin-top:3px">Install the plugin</div></div><span class="mono copy-label" style="font-size:11px;color:#444">copy</span></div>
+  <div class="step" data-copy="openclaw clawracha onboard --agent myagent" onclick="copy(this)"><span class="bold" style="font-size:26px;color:#252525;min-width:40px">02</span><div style="flex:1"><div class="mono" style="font-size:13px"><span style="color:#444">$ </span><span style="color:#FF6B00">openclaw clawracha onboard --agent myagent</span></div><div style="font-size:12px;color:#555;margin-top:3px">Set up your first memory space (60 seconds)</div></div><span class="mono copy-label" style="font-size:11px;color:#444">copy</span></div>
+  <div class="step" data-copy="openclaw clawracha grant <their-did-key> --agent myagent" onclick="copy(this)"><span class="bold" style="font-size:26px;color:#252525;min-width:40px">03</span><div style="flex:1"><div class="mono" style="font-size:13px"><span style="color:#444">$ </span><span style="color:#FF6B00">openclaw clawracha grant</span><span style="color:#555;font-style:italic"> &lt;their-did-key&gt;</span><span style="color:#FF6B00"> --agent myagent</span></div><div style="font-size:12px;color:#555;margin-top:3px">Grant access to another device, agent, or teammate</div></div><span class="mono copy-label" style="font-size:11px;color:#444">copy</span></div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" style="text-align:center;padding:56px 0 88px;border-top:1px solid #0E0E0E">
+  <h2 class="bold" style="font-size:46px;letter-spacing:-2px;margin-bottom:14px;line-height:1.1">Your memory.<br>Your agents.<br><span style="color:#FF6B00">Everywhere.</span></h2>
+  <p style="color:#555;font-size:15px;max-width:460px;margin:0 auto 32px;line-height:1.6">Open source, open data — switch providers anytime, your memory is always portable.</p>
+  <div style="display:flex;gap:12px;justify-content:center">
+    <a href="#install" class="btn" style="background:#FF6B00;color:#000;font-weight:700;font-size:16px;padding:14px 32px;border-radius:8px">Install Clawracha →</a>
+    <a href="https://github.com/storacha/clawracha" target="_blank" class="btn" style="color:#FF6B00;font-weight:600;font-size:16px;padding:14px 32px;border-radius:8px;border:2px solid #FF6B00">GitHub</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="border-top:1px solid #0C0C0C;padding:22px 0 32px;display:flex;justify-content:space-between;align-items:center">
+  <div style="display:flex;align-items:center;gap:8px">
+    <span class="mono" style="font-size:12px;color:#222">Built by</span>
+    <span class="bold" style="font-size:13px;color:#FF6B00">Storacha</span>
+    <span style="font-size:12px;color:#151515">•</span>
+    <span class="mono" style="font-size:12px;color:#222">Apache-2.0 / MIT</span>
+  </div>
+  <div style="display:flex;gap:16px">
+    <a href="https://github.com/storacha/clawracha" target="_blank" class="footer-link mono">GitHub</a>
+    <a href="https://storacha.network" target="_blank" class="footer-link mono">Storacha</a>
+    <a href="https://docs.storacha.network" target="_blank" class="footer-link mono">Docs</a>
+    <a href="https://clawhub.ai" target="_blank" class="footer-link mono">ClawHub</a>
+  </div>
+</footer>
+
+</div>
+
+<script>
+function copy(el) {
+  var text = el.getAttribute('data-copy');
+  var label = el.querySelector('.copy-label');
+  navigator.clipboard.writeText(text).then(function() {
+    if (label) {
+      var prev = label.textContent;
+      label.textContent = '\u2713 copied';
+      label.style.color = '#FF6B00';
+      setTimeout(function() {
+        label.textContent = prev;
+        label.style.color = '';
+      }, 2000);
+    }
+  });
+}
+</script>
+</body>
+</html>
